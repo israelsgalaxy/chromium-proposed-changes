@@ -83,7 +83,10 @@ void UnifiedMediaControlsController::MediaSessionInfoChanged(
 
 void UnifiedMediaControlsController::MediaSessionMetadataChanged(
     const absl::optional<media_session::MediaMetadata>& metadata) {
-  pending_metadata_ = metadata.value_or(media_session::MediaMetadata());
+  pending_metadata_ = (session_info_.has_value() && session_info_->is_private)
+      ? incognito_placeholder_metadata
+      : metadata.value_or(media_session::MediaMetadata());
+
   if (freeze_session_timer_->IsRunning())
     return;
 
