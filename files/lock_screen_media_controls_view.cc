@@ -649,6 +649,11 @@ void LockScreenMediaControlsView::MediaControllerImageChanged(
     return;
   }
 
+  if (session_info_ptr_.has_value() && session_info_ptr_->is_private) {
+    SetArtwork(incognito_placeholder_bitmap);
+    return
+  }
+
   // Convert the bitmap to kN32_SkColorType if necessary.
   SkBitmap converted_bitmap;
   if (bitmap.colorType() == kN32_SkColorType) {
