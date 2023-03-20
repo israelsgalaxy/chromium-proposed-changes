@@ -151,6 +151,15 @@ void UnifiedMediaControlsController::MediaSessionChanged(
 void UnifiedMediaControlsController::MediaControllerImageChanged(
     media_session::mojom::MediaSessionImageType type,
     const SkBitmap& bitmap) {
+  if (session_info_.has_value() && session_info_->is_private) {
+    if (freeze_session_timer_->IsRunning()) {
+      pending_artwork_ = incognito_placeholder_bitmap;
+      return;
+    }
+    UpdateArtwork(incognito_placeholder_bitmap, true);
+    return;
+  }
+  
   if (type != media_session::mojom::MediaSessionImageType::kArtwork)
     return;
 
