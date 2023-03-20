@@ -15,6 +15,7 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "build/build_config.h"
+#include "components/profile_metrics/browser_profile_type.h"
 #include "components/url_formatter/url_formatter.h"
 #include "content/browser/media/session/audio_focus_delegate.h"
 #include "content/browser/media/session/media_session_controller.h"
@@ -1098,6 +1099,9 @@ MediaSessionImpl::GetMediaSessionInfoSync() {
 
   // If the browser context is off the record then it should be sensitive.
   info->is_sensitive = web_contents()->GetBrowserContext()->IsOffTheRecord();
+
+  info->is_private = profile_metrics::GetBrowserProfileType(
+      web_contents()->GetBrowserContext()) == profile_metrics::BrowserProfileType::kIncognito;
 
   info->picture_in_picture_state =
       web_contents()->HasPictureInPictureVideo()
