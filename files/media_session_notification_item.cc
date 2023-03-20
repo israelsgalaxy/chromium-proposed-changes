@@ -94,7 +94,9 @@ void MediaSessionNotificationItem::MediaSessionInfoChanged(
 
 void MediaSessionNotificationItem::MediaSessionMetadataChanged(
     const absl::optional<media_session::MediaMetadata>& metadata) {
-  session_metadata_ = metadata.value_or(media_session::MediaMetadata());
+  session_metadata_ = (session_info_.has_value() && session_info_->is_private)
+      ? incognito_placeholder_metadata
+      : metadata.value_or(media_session::MediaMetadata());
 
   view_needs_metadata_update_ = true;
 
