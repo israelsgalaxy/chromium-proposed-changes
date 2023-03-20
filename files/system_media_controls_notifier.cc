@@ -113,6 +113,13 @@ void SystemMediaControlsNotifier::MediaSessionMetadataChanged(
     const absl::optional<media_session::MediaMetadata>& metadata) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  if (session_info_ptr_.has_value() && session_info_ptr_->is_private) {
+    system_media_controls_->SetTitle(incognito_placeholder_title);
+    system_media_controls_->SetArtist(incognito_placeholder_artist);
+    system_media_controls_->SetAlbum(incognito_placeholder_album);
+    return;
+  }
+
   if (metadata.has_value()) {
     // 5.3.3 Update the media metadata presented to the platform to match the
     // metadata for the active media session.
