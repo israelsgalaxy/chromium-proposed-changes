@@ -530,7 +530,7 @@ void LockScreenMediaControlsView::MediaSessionInfoChanged(
   }
 
   // If the session is marked as sensitive then don't show the controls.
-  if (session_info->is_sensitive && !IsDrawn()) {
+  if (session_info->is_sensitive && !session_info->is_private && !IsDrawn()) {
     SetShown(Shown::kNotShownSessionSensitive);
     return;
   }
