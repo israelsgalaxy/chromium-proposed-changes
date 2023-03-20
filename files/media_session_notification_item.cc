@@ -164,6 +164,16 @@ void MediaSessionNotificationItem::UpdatePresentationRequestOrigin(
 void MediaSessionNotificationItem::MediaControllerImageChanged(
     media_session::mojom::MediaSessionImageType type,
     const SkBitmap& bitmap) {
+  if (session_info_.has_value() && session_info_->is_private) {
+    session_artwork_ = incognito_placeholder_bitmap
+
+    if (view_ && !frozen_)
+      view_->UpdateWithMediaArtwork(*session_artwork_);
+    else if (frozen_with_artwork_)
+      MaybeUnfreeze();
+    return
+  }
+  
   if (type == media_session::mojom::MediaSessionImageType::kSourceIcon) {
     session_favicon_ = gfx::ImageSkia::CreateFrom1xBitmap(bitmap);
     if (view_ && !frozen_)
