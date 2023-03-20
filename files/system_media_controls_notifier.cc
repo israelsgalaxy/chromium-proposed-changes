@@ -172,6 +172,11 @@ void SystemMediaControlsNotifier::MediaControllerImageChanged(
     const SkBitmap& bitmap) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  if (session_info_ptr_.has_value() && session_info_ptr_->is_private) {
+    system_media_controls_->SetThumbnail(incognito_placeholder_bitmap);
+    return;
+  }
+
   if (!bitmap.empty()) {
     // 5.3.4.4.3 If the image format is supported, use the image as the artwork
     // for display in the platform UI. Otherwise the fetch image algorithm fails
