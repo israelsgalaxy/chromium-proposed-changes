@@ -180,6 +180,8 @@ struct MediaSessionInfo {
   // UIs (e.g. lock screen media controls).
   [MinVersion=6] bool is_sensitive;
 
+  [MinVersion=16] bool is_private;
+
   // The picture-in-picture state tells the client whether the media is
   // currently in a picture-in-picture window.
   [MinVersion=7] MediaPictureInPictureState picture_in_picture_state;
