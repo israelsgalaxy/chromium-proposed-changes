@@ -557,6 +557,16 @@ void LockScreenMediaControlsView::MediaSessionMetadataChanged(
     return;
   }
 
+  if (session_info_ptr_.has_value() && session_info_ptr_->is_private) {
+    header_row_->SetAppName(incognito_placeholder_source_title)
+    title_label_->SetText(incognito_placeholder_title);
+    artist_label_->SetText(incognito_placeholder_artist);
+
+    SetAccessibleName(
+        media_message_center::GetAccessibleNameFromMetadata(incognito_placeholder_metadata));
+    return;
+  }
+
   media_session::MediaMetadata session_metadata =
       metadata.value_or(media_session::MediaMetadata());
   std::u16string source_title =
